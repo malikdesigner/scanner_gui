@@ -87,5 +87,18 @@ app.put("/users/:id",(req,res)=>{
         return res.json("Employee successfully updated")
     })
 })
+app.post("/login",(req,res)=>{
+    const q="SELECT * from tbl_users WHERE `email`=? AND `password`=?";
+    mysqlConnection.query(q,[req.body.email,req.body.password],(err,result)=>{
+        if(err) return res.json({Message:"Error in server"});
+        if(result.length>0){
+            return res.json({login:true})
+        }
+        else {
+            return res.json({login:false})
+        }
+    })
+
+})
 
 app.listen(8800,()=>console.log("Server is runnig at port 8800"))

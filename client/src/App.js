@@ -7,6 +7,7 @@ import User from './pages/User';
 
 import Header from './pages/Header';
 import Update_user from './pages/Update_user';
+import Login from './pages/Login';
 
 const App = () => {
   return (
@@ -15,7 +16,11 @@ const App = () => {
         <Header />
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
           <Route path="/countries" element={<Countries />} />
+
+
+
           <Route path="/user" element={<User />} />
           <Route path="/add_user" element={<Add_user />} />
           <Route path="/update_user/:id" element={<Update_user />} />
