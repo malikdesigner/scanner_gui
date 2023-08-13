@@ -34,10 +34,10 @@ const User = () => {
   return (
     <div className='card m-3'>
       <h2>Users</h2>
-     
-        <Link className='btn btn-primary' to="/add_user"> Add New User </Link>
-      
-           <table className='table table-bordered table-striped'>
+
+      <Link className='btn btn-primary' to="/add_user"> Add New User </Link>
+
+      <table className='table table-bordered table-striped'>
         <thead>
           <tr>
             <th> Id </th>
@@ -46,27 +46,27 @@ const User = () => {
             <th> Role </th>
             <th> Status </th>
             <th colSpan={3}> Action </th>
-            </tr>
+          </tr>
         </thead>
         <tbody>
-        {employees.map((employee) => (
-<tr key={employee.id}>
-  <td>{employee.id}</td>
-  <td>{employee.name}</td>
+          {employees.map((employee) => (
+            <tr key={employee.id}>
+              <td>{employee.id}</td>
+              <td>{employee.name}</td>
 
-  <td>{employee.email}</td>
+              <td>{employee.email}</td>
 
-  <td>{employee.role}</td>
-  <td>{employee.status}</td>
-  <td> <Link className='btn btn-primary' to={`/update_user/${employee.id}`}> Edit </Link>  </td>
-  <td> <Link className='btn btn-primary' to={`/view/${employee.id}`}> View </Link> </td>
-  <td> <button className='btn btn-primary' onClick={() => handleDelete(employee.id)}>Delete</button></td>                                                                                           
+              <td>{employee.role}</td>
+              <td>{employee.status}</td>
+              <td> <Link className='btn btn-primary' to={`/update_user/${employee.id}`}> Edit </Link>  </td>
+              <td> <Link className='btn btn-primary' to={`/view/${employee.id}`}> View </Link> </td>
+              <td> <button className='btn btn-primary' onClick={() => handleDelete(employee.id)}>Delete</button></td>
 
 
 
-</tr>
+            </tr>
 
-        ))}
+          ))}
 
         </tbody>
       </table>

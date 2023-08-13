@@ -38,20 +38,20 @@ export const Add_user = () => {
         try {
             console.log(employees)
             await axios.post("http://localhost:8800/users", employees)
-            // navigate("/")
         }
         catch (err) {
             console.log(err)
         }
         setTimeout(() => {
-
+            
             setLoading(false); // End loading
+             navigate("/")
         }, 3500)
 
     }
     return (
         <div>
-            {isLoading ? <div className='col-md-12'  style={{ textAlign: '-webkit-center' }}>
+            {isLoading ? <div className='col-md-12' style={{ textAlign: '-webkit-center' }}>
                 <div id='loader' className="spinner-border text-primary" role="status" style={{ textAlign: '-webkit-center' }}>
                     <span className="sr-only"></span>
                 </div>

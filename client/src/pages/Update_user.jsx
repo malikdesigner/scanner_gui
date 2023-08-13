@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from "axios"
 
@@ -15,7 +15,7 @@ function Update_user() {
 
     })
     // const [employees, setTempEmployees] = useState({
-        
+
     //     name: "",
     //     email: "",
     //     password: "",
@@ -26,18 +26,18 @@ function Update_user() {
     const employeeId = location.pathname.split("/")[2]
     useEffect(() => {
         const fetchAllUsers = async () => {
-          try {
-            const res = await axios.get(`http://localhost:8800/users/${employeeId}`)
-            //setTempEmployees(res.data[0])
-            setEmployees(res.data[0]);
-          }
-          catch (err) {
-            console.log(err)
-          }
+            try {
+                const res = await axios.get(`http://localhost:8800/users/${employeeId}`)
+                //setTempEmployees(res.data[0])
+                setEmployees(res.data[0]);
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
         fetchAllUsers()
-      }, [])
-      
+    }, [])
+
     const role_options = [
         { label: "Publisher", value: 1 },
         { label: "Admin", value: 2 },
@@ -63,7 +63,7 @@ function Update_user() {
 
         try {
             await axios.put(`http://localhost:8800/users/${employeeId}`, employees)
-              
+
         }
         catch (err) {
             console.log(err)
@@ -138,7 +138,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <input className='form-control mt-2 mb-2' type="password"  value={employees.password} onChange={handleChange} name="password" />
+                                            <input className='form-control mt-2 mb-2' type="password" value={employees.password} onChange={handleChange} name="password" />
                                         </div>
                                     </td>
                                 </tr>
@@ -153,7 +153,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <select className='form-control mt-2 mb-2' name='role' value={employees.role}  onChange={handleChange}>
+                                            <select className='form-control mt-2 mb-2' name='role' value={employees.role} onChange={handleChange}>
                                                 {role_options.map(option => (
                                                     <option value={option.value} > {option.label} </option>
                                                 ))}
@@ -171,7 +171,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <select className='form-control mt-2 mb-2' name='status' value={employees.status}  onChange={handleChange}>
+                                            <select className='form-control mt-2 mb-2' name='status' value={employees.status} onChange={handleChange}>
                                                 {status_options.map(option => (
                                                     <option value={option.value} > {option.label} </option>
                                                 ))}
