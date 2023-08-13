@@ -58,7 +58,7 @@ const User = () => {
 
   <td>{employee.role}</td>
   <td>{employee.status}</td>
-  <td> <Link className='btn btn-primary' to={`/update/${employee.id}`}> Edit </Link>  </td>
+  <td> <Link className='btn btn-primary' to={`/update_user/${employee.id}`}> Edit </Link>  </td>
   <td> <Link className='btn btn-primary' to={`/view/${employee.id}`}> View </Link> </td>
   <td> <button className='btn btn-primary' onClick={() => handleDelete(employee.id)}>Delete</button></td>                                                                                           
 

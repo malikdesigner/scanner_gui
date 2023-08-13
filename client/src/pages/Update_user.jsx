@@ -14,21 +14,21 @@ function Update_user() {
         status: ""
 
     })
-    const [tempemployees, setTempEmployees] = useState({
+    // const [employees, setTempEmployees] = useState({
         
-        name: "",
-        email: "",
-        password: "",
-        role: "",
-        status: ""
-    });
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    //     role: "",
+    //     status: ""
+    // });
     const [isLoading, setLoading] = useState(false);
     const employeeId = location.pathname.split("/")[2]
     useEffect(() => {
         const fetchAllUsers = async () => {
           try {
             const res = await axios.get(`http://localhost:8800/users/${employeeId}`)
-            setTempEmployees(res.data[0])
+            //setTempEmployees(res.data[0])
             setEmployees(res.data[0]);
           }
           catch (err) {
@@ -37,7 +37,6 @@ function Update_user() {
         }
         fetchAllUsers()
       }, [])
-      console.log(tempemployees)
       
     const role_options = [
         { label: "Publisher", value: 1 },
@@ -47,25 +46,34 @@ function Update_user() {
 
     ]
     const status_options = [
-        { label: "Active", value: 1 },
-        { label: "Inactive", value: 0 },
+        { label: "Active", value: 'active' },
+        { label: "Inactive", value: 'inactive' },
     ]
 
 
     console.log(`EMPLOYEEE ID ${employeeId}`)
     const handleChange = (e) => {
-        setEmployees((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-    }
-    console.log(employees)
+        const { name, value } = e.target;
+        setEmployees((prev) => ({ ...prev, [name]: value }));
+        console.log(employees)
+    };
     const handleClick = async e => {
         e.preventDefault()
+        setLoading(true); // Start loading
+
         try {
             await axios.put(`http://localhost:8800/users/${employeeId}`, employees)
-            //   navigate("/")
+              
         }
         catch (err) {
             console.log(err)
         }
+        setTimeout(() => {
+
+            setLoading(false);
+            navigate("/") // End loading
+        }, 3500)
+
     }
 
 
@@ -100,7 +108,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <input className='form-control mt-2 mb-2' type="text" placeholder='name' value={tempemployees.name} onChange={handleChange} name="name" />
+                                            <input className='form-control mt-2 mb-2' type="text" value={employees.name} onChange={handleChange} name="name" />
                                         </div>
                                     </td>
                                 </tr>
@@ -115,7 +123,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <input className='form-control mt-2 mb-2' type="text" placeholder='email' value={tempemployees.email} onChange={handleChange} name="email" />
+                                            <input className='form-control mt-2 mb-2' type="text" value={employees.email} onChange={handleChange} name="email" />
                                         </div>
                                     </td>
                                 </tr>
@@ -130,7 +138,7 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <input className='form-control mt-2 mb-2' type="password" value={tempemployees.password} placeholder='password' onChange={handleChange} name="password" />
+                                            <input className='form-control mt-2 mb-2' type="password"  value={employees.password} onChange={handleChange} name="password" />
                                         </div>
                                     </td>
                                 </tr>
@@ -145,9 +153,9 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <select className='form-control mt-2 mb-2' name='role' onChange={handleChange}>
+                                            <select className='form-control mt-2 mb-2' name='role' value={employees.role}  onChange={handleChange}>
                                                 {role_options.map(option => (
-                                                    <option value={option.value} selected={option.value===tempemployees.role}> {option.label} </option>
+                                                    <option value={option.value} > {option.label} </option>
                                                 ))}
                                             </select>                                        </div>
                                     </td>
@@ -163,9 +171,9 @@ function Update_user() {
 
                                         <div className="form-group description_input_box">
 
-                                            <select className='form-control mt-2 mb-2' name='status' onChange={handleChange}>
+                                            <select className='form-control mt-2 mb-2' name='status' value={employees.status}  onChange={handleChange}>
                                                 {status_options.map(option => (
-                                                    <option value={option.value} selected={option.value===tempemployees.status} > {option.label} </option>
+                                                    <option value={option.value} > {option.label} </option>
                                                 ))}
                                             </select>                                        </div>
                                     </td>
