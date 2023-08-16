@@ -13,7 +13,7 @@ const Login = () => {
         const { name, value } = e.target;
         setValues((prev) => ({ ...prev, [name]: value }));
     };
-
+    axios.defaults.withCredentials=true;
     // const handlePasswordChange = (e) => {
     //     setPassword(e.target.value);
     // };
