@@ -5,6 +5,8 @@ import axios from "axios"
 function Update_user() {
     const navigate = useNavigate()
     const location = useLocation()
+    const [name, setName] = useState();
+
     const [employees, setEmployees] = useState({
 
         name: "",
@@ -14,6 +16,18 @@ function Update_user() {
         status: ""
 
     })
+    useEffect(() => {
+        axios.get('http://localhost:8800').then(res => {
+            console.log(res)
+            if (res.data.valid) {
+                setName(res.data.username);
+            }
+            else {
+                navigate('/login')
+            }
+        })
+            .catch(err => console.log(err))
+    }, [])
     // const [employees, setTempEmployees] = useState({
 
     //     name: "",
