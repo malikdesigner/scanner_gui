@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
 
@@ -12,6 +12,21 @@ export const Add_user = () => {
         status: ""
 
     })
+    const [name, setName] = useState();
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        axios.get('http://localhost:8800').then(res => {
+            console.log(res)
+            if (res.data.valid) {
+                setName(res.data.username);
+            }
+            else {
+                navigate('/login')
+            }
+        })
+            .catch(err => console.log(err))
+    }, [])
     const [isLoading, setLoading] = useState(false);
 
     const role_options = [
@@ -25,7 +40,6 @@ export const Add_user = () => {
         { label: "Active", value: 1 },
         { label: "Inactive", value: 0 },
     ]
-    const navigate = useNavigate()
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEmployees((prev) => ({ ...prev, [name]: value }));

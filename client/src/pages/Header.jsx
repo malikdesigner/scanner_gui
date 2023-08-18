@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './components.css'
 
 
 const Header = () => {
+  
+
   return (
     <nav className="bg-dark p-3">
       <div className="row">
         <div className="col-md-4">
-            <Link to='/' >
-<img src="https://staging.sso.monitoringservice.co/sso/assets/icons/Webp.net-resizeimage.png" alt=""  style={{ width: '15%', }}  />
-            </Link>
+          <Link to='/' >
+            <img src="https://staging.sso.monitoringservice.co/sso/assets/icons/Webp.net-resizeimage.png" alt="" style={{ width: '15%', }} />
+          </Link>
         </div>
         <div className="col-md-8">
           {/* Apply Bootstrap utility classes to create a horizontal list */}
