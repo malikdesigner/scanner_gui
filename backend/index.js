@@ -1,6 +1,9 @@
 import mysql from "mysql"
 import express from"express";
 import cors from"cors";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import bodyParser from "body-parser";
 // const { format } = require('date-fns');
 
 import {format} from "date-fns"
@@ -15,13 +18,32 @@ var mysqlConnection=mysql.createConnection({
     database:"intel_tool"
 });
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin:["http://localhost:3000"],
+    methods:["POST","GET"],
+    credentials:true
+}))
+// app.use(cors({
+//   origin: 'https://true-pleasantly-warthog.ngrok-free.app',
+//   credentials: true,
+// }));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(session({
+    secret:'secret',
+    resave:false,
+    saveUninitialized:false,
+    cookie:{
+        secure:false,
+        maxAge:1000*60*60*24
+    }
+}))
 app.get('/',(req,res)=>{
-    // mysqlConnection.query('Select * from employees',(err,rows,fields)=>{
-    //    res.json("HEllo this is the backend")
-    // })
-
-    res.json("HEllo this is the backend")
+    if(req.session.username){
+        return res.json({valid:true,username:req.session.username})
+    }else {
+        return res.json({valid:false})
+    }
 })
 
 app.get('/users',(req,res)=>{
@@ -92,7 +114,9 @@ app.post("/login",(req,res)=>{
     mysqlConnection.query(q,[req.body.email,req.body.password],(err,result)=>{
         if(err) return res.json({Message:"Error in server"});
         if(result.length>0){
-            return res.json({login:true})
+            req.session.username=result[0].name
+            console.log(req.session.username)
+            return res.json({login:true,username:req.session.username})
         }
         else {
             return res.json({login:false})
