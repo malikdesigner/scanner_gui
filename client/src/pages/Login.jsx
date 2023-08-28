@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'
+import config from '../config'
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -25,9 +26,12 @@ const Login = () => {
          axios.post(`http://localhost:8800/login`, values).then(res=>{
              console.log(res);
             if(res.data.login){
-                
-                navigate("/")
-            }
+                console.log("IN FIF ")
+                try{
+
+                    navigate(`/`)          
+                }catch(e){console.log(e)}
+              }
             else {
                 alert("No Record!!!")
             }

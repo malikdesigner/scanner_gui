@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from "axios"
+import Header from './Header';
 
 function Update_user() {
     const navigate = useNavigate()
@@ -93,6 +94,7 @@ function Update_user() {
 
     return (
         <div>
+            <Header />
             {isLoading ? <div className='col-md-12' style={{ textAlign: '-webkit-center' }}>
                 <div id='loader' className="spinner-border text-primary" role="status" style={{ textAlign: '-webkit-center' }}>
                     <span className="sr-only"></span>

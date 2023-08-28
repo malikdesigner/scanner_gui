@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
+import Header from './Header';
 
 export const Add_user = () => {
     const [employees, setEmployees] = useState({
@@ -65,6 +66,7 @@ export const Add_user = () => {
     }
     return (
         <div>
+            <Header />
             {isLoading ? <div className='col-md-12' style={{ textAlign: '-webkit-center' }}>
                 <div id='loader' className="spinner-border text-primary" role="status" style={{ textAlign: '-webkit-center' }}>
                     <span className="sr-only"></span>

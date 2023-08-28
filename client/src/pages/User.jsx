@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
+import Header from './Header';
 
 import axios from "axios"
 
@@ -32,6 +33,8 @@ const User = () => {
 
 
   return (
+    <div>
+      <Header />
     <div className='card m-3'>
       <h2>Users</h2>
 
@@ -70,6 +73,7 @@ const User = () => {
 
         </tbody>
       </table>
+    </div>
     </div>
   );
 }
