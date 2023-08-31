@@ -43,7 +43,7 @@ const Header = () => {
                             <Link style={{ textDecoration: 'none' }} to="/"> <h5> <strong>Home</strong></h5></Link>
                         </li>
                         <li className="nav-item mx-5">
-                            <Link style={{ textDecoration: 'none' }} to="/realEstates/main"><h5><strong>Real Estates</strong> </h5> </Link>
+                            <Link style={{ textDecoration: 'none' }} to="/realEstate"><h5><strong>Real Estates</strong> </h5> </Link>
                         </li>
                         <li className="nav-item mx-5">
                             <Link style={{ textDecoration: 'none' }} to="/user"> <h5> <strong> Jobs </strong> </h5> </Link>
