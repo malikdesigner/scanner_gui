@@ -3,6 +3,7 @@ import Header from '../Header'
 import Footer from '../footer'
 import '../component.css'
 import Select from 'react-select';
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,69 +11,129 @@ import backgroundImage from '../../assets/realEstateMain.jpg'
 
 function Filters() {
 
-    const [isCardVisible, setCardVisibility] = useState(false);
+  const [isCardVisible, setCardVisibility] = useState(false);
 
-    const handleInputClick = () => {
-      // When the input is clicked, set isCardVisible to true to display the card
-      setCardVisibility(true);
-    };
-    const handleOptionClick = () => {
-      // When the input is clicked, set isCardVisible to true to display the card
-      setCardVisibility(!isCardVisible);
-    };
-  
-    const divStyle = {
-      background: `url(${backgroundImage})`,
-      backgroundSize: 'cover', // Adjust the background size as needed
-      backgroundPosition: 'center', // Adjust the background position as needed
-      width: '100%',
-      height: '500px', // Set the height of the div
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      // opacity:'0.5'
-    };
-  
-    const [activeButton, setActiveButton] = useState('Buy'); // Initialize the active button
-  
-    const handleButtonClick = (buttonName) => {
-      setActiveButton(buttonName);
-    };
-    const options = [
-      { label: "Management", value: 1 },
-      { label: "Technology", value: 2 },
-      { label: "Finanace", value: 3 }
-    ]
-    const [selectedOption, setSelectedOption] = useState(null);
-  
-    const handleSelectChange = (selectedOption) => {
-      setSelectedOption(selectedOption);
-    };
-    const customStyles = {
-      control: (provided, state) => ({
-        ...provided,
-        width: 200,
-        padding: "3%",
-        paddingRight: 5,
-        border: state.isFocused ? '1px solid white' : provided.border,
-  
-  
-  
-      }),
-      menu: (provided, state) => ({
-        ...provided,
-        width: 200,
-        //direction: 'rtl', // Align the menu to the right
-        padding: 10,
-  
-  
-      }),
-      indicatorSeparator: (provided, state) => ({
-        ...provided,
-        backgroundColor: 'white', // Set background color to white
-      }),
+  const handleInputClick = () => {
+    // When the input is clicked, set isCardVisible to true to display the card
+    setCardVisibility(true);
+  };
+  const handleOptionClick = () => {
+    // When the input is clicked, set isCardVisible to true to display the card
+    setCardVisibility(!isCardVisible);
+  };
+
+  const divStyle = {
+    background: `url(${backgroundImage})`,
+    backgroundSize: 'cover', // Adjust the background size as needed
+    backgroundPosition: 'center', // Adjust the background position as needed
+    width: '100%',
+    height: '500px', // Set the height of the div
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    // opacity:'0.5'
+  };
+
+  const [activeButton, setActiveButton] = useState('Buy'); // Initialize the active button
+
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
+  const options = [
+    { label: "Management", value: 1 },
+    { label: "Technology", value: 2 },
+    { label: "Finanace", value: 3 }
+  ]
+  const [selectedOption, setSelectedOption] = useState(null);
+  const handleSelectChange = (selectedState) => {
+    console.log(selectedState)
+    setSelectedOption(selectedState);
+  };
+  //making province dropdown
+
+  const [fetchedStates, setFetchedStates] = useState([]);
+  const [selectedState, setSelectedState] = useState(null);
+  useEffect(() => {
+    const fetchAllStates = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/province")
+        console.log(res)
+        setFetchedStates(res.data)
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
+    fetchAllStates()
+  }, [])
+  const handleStateChange = (value) => {
+    setSelectedState(value);
+  };
+  
+
+  //making cities dropdown
+  const [cityOptions, setCityOptions] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  //province and cities dropdown on province change
+  useEffect(() => {
+    if (selectedState !== null) { 
+      console.log('Seelct'+selectedState)     // Only send the request if selectedOption is not null
+      const fetchCityData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8800/cities/${selectedState.value}`);
+          const cityOptions = response.data.map((city) => ({
+            value: city.id,
+            label: city.city_name,
+          }));
+          setCityOptions(cityOptions);
+        } catch (error) {
+          console.error('Error fetching city data:', error);
+        }
+      };
+      fetchCityData();
+    } else {
+      console.log('seelctedstare'+selectedState)
+      setCityOptions([]);
+    }
+  }, [selectedState]);
+
+
+  const handleCityChange = (selectedCity) => {
+    setSelectedCity(selectedCity);
+  };
+//dropdown for property type
+const propertyType = [
+  { label: "Home", value: 1 },
+  { label: "Plot", value: 2 },
+  { label: "Finanace", value: 3 }
+] 
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 200,
+      padding: "3%",
+      paddingRight: 5,
+      border: state.isFocused ? '1px solid white' : provided.border,
+
+
+
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      width: 200,
+      //direction: 'rtl', // Align the menu to the right
+      padding: 10,
+
+
+    }),
+    indicatorSeparator: (provided, state) => ({
+      ...provided,
+      backgroundColor: 'white', // Set background color to white
+    }),
+  }
   return (
     <div>
-        <div className='row ' style={divStyle}>
+      <div className='row ' style={divStyle}>
         <div className='padding:2%'>
           <h5 style={{ textAlign: 'center', marginTop: '4%' }}> Search Properties for sale </h5>
           <div style={{
@@ -132,22 +193,23 @@ function Filters() {
               <div className='row' style={{ backgroundColor: " rgba(86, 90, 92, 0.5)", padding: '2%' }}>
                 <div className='col-md-3' style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
                   <Select
-                    value={selectedOption}
-                    onChange={handleSelectChange}
-                    options={options}
-                    placeholder="Countries"
+                    value={selectedState}
+                    onChange={handleStateChange}
+                    options={[
+                      { value: '', label: 'Select a state' }, // Placeholder option
+                      ...fetchedStates.map((state) => ({ value: state.id, label: state.province_name }))
+                    ]}
+                    placeholder="Province"
                     styles={customStyles}
+                    // data={fetchedStates.map((state) => ({ value: state.id, label: state.province_name }))}
+
                     components={{
                       DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
                         <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
                       ),
                     }}
                   />
-                  {selectedOption && (
-                    <div>
-                      <p>Selected Value: {selectedOption.label}</p>
-                    </div>
-                  )}
+
                 </div>
                 <div className='col-md-7'>
                   <input style={{
@@ -179,10 +241,10 @@ function Filters() {
                 <div className={`row transition-element ${isCardVisible ? 'visible' : 'hidden'}`} style={{ backgroundColor: " rgba(86, 90, 92, 0.5)", paddingRight: '2%', paddingLeft: '2%' }}>
                   <div className='col-md-3'>
                     <Select
-                      value={selectedOption}
-                      onChange={handleSelectChange}
-                      options={options}
-                      placeholder="Countries"
+                      value={selectedCity}
+                      onChange={handleCityChange}
+                      options={cityOptions}
+                      placeholder="City"
                       styles={customStyles}
                       components={{
                         DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
@@ -190,11 +252,7 @@ function Filters() {
                         ),
                       }}
                     />
-                    {selectedOption && (
-                      <div>
-                        <p>Selected Value: {selectedOption.label}</p>
-                      </div>
-                    )}
+
                   </div>
                   <div className='col-md-3'>
                     <Select
@@ -209,11 +267,8 @@ function Filters() {
                         ),
                       }}
                     />
-                    {selectedOption && (
-                      <div>
-                        <p>Selected Value: {selectedOption.label}</p>
-                      </div>
-                    )}
+                  
+
                   </div>
                   <div className='col-md-3'>
                     <Select
@@ -228,11 +283,7 @@ function Filters() {
                         ),
                       }}
                     />
-                    {selectedOption && (
-                      <div>
-                        <p>Selected Value: {selectedOption.label}</p>
-                      </div>
-                    )}
+
                   </div>
                   <div className='col-md-3'>
                     <Select
@@ -247,11 +298,7 @@ function Filters() {
                         ),
                       }}
                     />
-                    {selectedOption && (
-                      <div>
-                        <p>Selected Value: {selectedOption.label}</p>
-                      </div>
-                    )}
+
                   </div>
                 </div>
               )}
