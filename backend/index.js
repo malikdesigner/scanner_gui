@@ -124,5 +124,24 @@ app.post("/login",(req,res)=>{
     })
 
 })
+app.get('/province',(req,res)=>{
+    const q='Select * from tbl_states';
+    mysqlConnection.query(q,(err,rows)=>{
+        if(err) return res.json(err)
+       return res.json(rows)
+    });
+
+});
+app.get('/cities/:provinceId', (req, res) => {
+    const provinceId = req.params.provinceId;
+    const q = 'SELECT * FROM tbl_cities WHERE province = ?';
+    
+    mysqlConnection.query(q, [provinceId], (err, rows) => {
+        if (err) {
+            return res.json(err);
+        }
+        return res.json(rows);
+    });
+});
 
 app.listen(8800,()=>console.log("Server is runnig at port 8800"))
