@@ -48,14 +48,14 @@ const Header = () => {
                         <li className="nav-item mx-5">
                             <Link style={{ textDecoration: 'none' }} to="/user"> <h5> <strong> Jobs </strong> </h5> </Link>
                         </li>
-                        <li class="nav-item dropdown mx-5">
-                            <span class="nav-item dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" style={{ fontSize: 'larger' }}>
+                        <li className="nav-item dropdown mx-5">
+                            <span className="nav-item dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" style={{ fontSize: 'larger' }}>
                                 <strong> Dropdown link </strong>
                             </span>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style={{ textDecoration: 'none', padding: '10px' }}>
-                                <Link class="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Action</Link>
-                                <Link class="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Another action</Link>
-                                <Link class="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Something else here</Link>
+                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style={{ textDecoration: 'none', padding: '10px' }}>
+                                <Link className="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Action</Link>
+                                <Link className="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Another action</Link>
+                                <Link className="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Something else here</Link>
                             </div>
                         </li>
                     </ul>

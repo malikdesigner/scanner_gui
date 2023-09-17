@@ -161,3 +161,16 @@
   .underline:hover::after {
     transform: scaleX(1); /* Expand the underline on hover */
   }
+
+  .custom-slider .slider-track {
+    background-color: white;
+    height: 10px; /* Adjust the height as needed */
+  }
+  
+  .custom-slider .slider-handle {
+    background-color: white;
+    border: 2px solid #007bff; /* Set the border color to blue (adjust as needed) */
+    width: 20px;
+    height: 20px;
+    margin-top: -6px; /* Adjust the margin to center the handle vertically */
+  }

@@ -6,6 +6,8 @@ import Select from 'react-select';
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+// import Slider from 'react-slider';
+import Slider from '@mui/material/Slider';
 
 import backgroundImage from '../../assets/realEstateMain.jpg'
 
@@ -67,7 +69,7 @@ function Filters() {
   const handleStateChange = (value) => {
     setSelectedState(value);
   };
-  
+
 
   //making cities dropdown
   const [cityOptions, setCityOptions] = useState([]);
@@ -75,8 +77,8 @@ function Filters() {
 
   //province and cities dropdown on province change
   useEffect(() => {
-    if (selectedState !== null) { 
-      console.log('Seelct'+selectedState)     // Only send the request if selectedOption is not null
+    if (selectedState !== null) {
+      console.log('Seelct' + selectedState)     // Only send the request if selectedOption is not null
       const fetchCityData = async () => {
         try {
           const response = await axios.get(`http://localhost:8800/cities/${selectedState.value}`);
@@ -91,7 +93,7 @@ function Filters() {
       };
       fetchCityData();
     } else {
-      console.log('seelctedstare'+selectedState)
+      // console.log('seelctedstare' + selectedState)
       setCityOptions([]);
     }
   }, [selectedState]);
@@ -100,14 +102,90 @@ function Filters() {
   const handleCityChange = (selectedCity) => {
     setSelectedCity(selectedCity);
   };
-//dropdown for property type
-const propertyType = [
-  { label: "Home", value: 1 },
-  { label: "Plot", value: 2 },
-  { label: "Finanace", value: 3 }
-] 
+  //dropdown for property type
+  const [selectedPropertyType, setselectedPropertyType] = useState(null);
 
-  const customStyles = {
+  const data = [
+    {
+      label: 'Group 1',
+      options: [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+        { value: 'option3', label: 'Option 3' },
+      ],
+    },
+    {
+      label: 'Group 2',
+      options: [
+        { value: 'option4', label: 'Option 4' },
+        { value: 'option5', label: 'Option 5' },
+        { value: 'option6', label: 'Option 6' },
+      ],
+    },
+  ];
+  const handlePropertyChange = (selectedPropertyType) => {
+    setselectedPropertyType(selectedPropertyType);
+  };
+  //JSON DATA
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  useEffect(() => {
+    // Fetch category options
+    axios.get('http://localhost:8800/getCategories').then((response) => {
+      setCategoryOptions(response.data);
+    });
+  }, []);
+
+  const handleCategoryChange = (selectedCategory) => {
+    setSelectedCategory(selectedCategory.value);
+
+    console.log(selectedCategory.value)
+    // Fetch subcategory options based on the selected category
+    axios.get(`http://localhost:8800/getSubcategories/${selectedCategory.value}`).then((response) => {
+      const subcategories = response.data;
+      console.log('Subcategories:', subcategories);
+
+      // Ensure subcategories is an array before setting it
+      if (Array.isArray(subcategories)) {
+        setSubcategoryOptions(subcategories.map((subcategory) => ({
+          label: subcategory,
+          value: subcategory,
+        })));
+      } else {
+        console.error('Invalid subcategories data:', subcategories);
+        setSubcategoryOptions([]); // Set empty array as a fallback
+      }
+    })
+      .catch((error) => {
+        console.error('Error fetching subcategories:', error);
+        setSubcategoryOptions([]); // Set empty array on error
+      });
+  };
+  const handleSubcategoryChange = (selectedOption) => {
+    setSelectedSubcategory(selectedOption.value);
+  };
+  // JSON DATA END
+
+  // setting price range dropdown
+  const minRange = 0;
+  const maxRange = 10000000;
+  const [priceRange, setPriceRange] = useState([0, 1000000000]);
+
+  const handlePriceRange = (event, newValue) => {
+    setPriceRange(newValue);
+  };
+
+  // setting marla range dropdown
+  const minMarlaRange = 0;
+  const maxMarlaRange = 10000;
+  const [marlaRange, setMarlaRange] = useState([0, 1000000000]);
+
+  const handleMarlaRange = (event, newValue) => {
+    setMarlaRange(newValue);
+  };
+  const defaultStyles = {
     control: (provided, state) => ({
       ...provided,
       width: 200,
@@ -131,6 +209,31 @@ const propertyType = [
       backgroundColor: 'white', // Set background color to white
     }),
   }
+  const changeStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: "90%",
+      padding: "3%",
+      paddingRight: 5,
+      border: state.isFocused ? '1px solid white' : provided.border,
+
+
+
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      width: 200,
+      //direction: 'rtl', // Align the menu to the right
+      padding: 10,
+
+
+    }),
+    indicatorSeparator: (provided, state) => ({
+      ...provided,
+      backgroundColor: 'white', // Set background color to white
+    }),
+  }
+
   return (
     <div>
       <div className='row ' style={divStyle}>
@@ -189,9 +292,9 @@ const propertyType = [
           </div>
           <div className='row' style={{ display: 'flex', justifyContent: 'center', marginTop: '2%' }}>
 
-            <div className='col-md-8'>
-              <div className='row' style={{ backgroundColor: " rgba(86, 90, 92, 0.5)", padding: '2%' }}>
-                <div className='col-md-3' style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+            <div className='col-md-10' style={{ backgroundColor: " rgba(86, 90, 92, 0.5)" }}>
+              <div className='row' style={{ padding: '2%' }}>
+                <div className='col-md-2' style={{ display: 'flex', alignItems: 'flex-start', marginRight: '1%' }}>
                   <Select
                     value={selectedState}
                     onChange={handleStateChange}
@@ -200,7 +303,7 @@ const propertyType = [
                       ...fetchedStates.map((state) => ({ value: state.id, label: state.province_name }))
                     ]}
                     placeholder="Province"
-                    styles={customStyles}
+                    styles={defaultStyles}
                     // data={fetchedStates.map((state) => ({ value: state.id, label: state.province_name }))}
 
                     components={{
@@ -211,15 +314,30 @@ const propertyType = [
                   />
 
                 </div>
-                <div className='col-md-7'>
+                <div className='col-md-2' style={{ marginRight: '1%' }}>
+                  <Select
+                    value={selectedCity}
+                    onChange={handleCityChange}
+                    options={cityOptions}
+                    placeholder="City"
+                    styles={defaultStyles}
+                    components={{
+                      DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
+                        <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
+                      ),
+                    }}
+                  />
+
+                </div>
+                <div className='col-md-5'>
                   <input style={{
-                    width: '100%', height: '90%', border: '1px solid white', outline: 'none', // Remove the default focus outline
+                    width: '100%', height: '90%', border: '1px solid white', outline: 'none',
                   }} onFocus={(e) => e.target.style.border = '1px solid blue'}
                     onBlur={(e) => e.target.style.border = '1px solid white'}
                     onClick={handleInputClick}
                   />
                 </div>
-                <div className='col-md-2' style={{ textAlign: '-webkit-left' }}>
+                <div className='col-md-2' style={{ textAlign: '-webkit-left', marginLeft: 'auto' }}>
                   <button
                     className='btn'
                     style={{
@@ -238,71 +356,97 @@ const propertyType = [
                 </div>
               </div>
               {isCardVisible && (
-                <div className={`row transition-element ${isCardVisible ? 'visible' : 'hidden'}`} style={{ backgroundColor: " rgba(86, 90, 92, 0.5)", paddingRight: '2%', paddingLeft: '2%' }}>
-                  <div className='col-md-3'>
+                <div className={`row transition-element ${isCardVisible ? 'visible' : 'hidden'}`} style={{ paddingRight: '2%', paddingLeft: '2%', marginTop: '1%' }}>
+
+                  <div className="col-md-3">
                     <Select
-                      value={selectedCity}
-                      onChange={handleCityChange}
-                      options={cityOptions}
-                      placeholder="City"
-                      styles={customStyles}
-                      components={{
-                        DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                          <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                        ),
-                      }}
+                      options={categoryOptions}
+                      value={categoryOptions.find((option) => option.value === selectedCategory)}
+                      onChange={handleCategoryChange}
+                      placeholder="Property Type"
+                      styles={changeStyles}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <Select options={subcategoryOptions} placeholder="Property Category" onChange={handleSubcategoryChange} styles={changeStyles} />
+                  </div>
+
+                  <div className='col-md-3' style={{ background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ color: 'grey' }}>Price Range</span>
+                    <Slider
+                      value={priceRange}
+                      onChange={handlePriceRange}
+                      valueLabelDisplay="auto"
+                      min={minRange} // Set the minimum value
+                      max={maxRange} // Set the maximum value
                     />
 
-                  </div>
-                  <div className='col-md-3'>
-                    <Select
-                      value={selectedOption}
-                      onChange={handleSelectChange}
-                      options={options}
-                      placeholder="Countries"
-                      styles={customStyles}
-                      components={{
-                        DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                          <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                        ),
-                      }}
-                    />
-                  
 
                   </div>
-                  <div className='col-md-3'>
-                    <Select
-                      value={selectedOption}
-                      onChange={handleSelectChange}
-                      options={options}
-                      placeholder="Countries"
-                      styles={customStyles}
-                      components={{
-                        DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                          <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                        ),
-                      }}
+                  <div className='col-md-3' style={{ background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ color: 'grey' }}>Area Marla</span>
+                    <Slider
+                      value={marlaRange}
+                      onChange={handleMarlaRange}
+                      valueLabelDisplay="auto"
+                      min={minMarlaRange} // Set the minimum value
+                      max={maxMarlaRange} // Set the maximum value
                     />
 
-                  </div>
-                  <div className='col-md-3'>
-                    <Select
-                      value={selectedOption}
-                      onChange={handleSelectChange}
-                      options={options}
-                      placeholder="Countries"
-                      styles={customStyles}
-                      components={{
-                        DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                          <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                        ),
-                      }}
-                    />
 
                   </div>
+
                 </div>
               )}
-              <div className='row' style={{ backgroundColor: " rgba(86, 90, 92, 0.5)", paddingRight: '2%', paddingLeft: '2%' }}>
+
+              {/* {selectedCategory == "Plots" &&
+                (
+                  <div className={`row transition-element ${isCardVisible ? 'visible' : 'hidden'}`} style={{ paddingRight: '2%', paddingLeft: '2%', marginTop: '1%' }}>
+                    <div className='col-md-3'>
+                      <Select
+                        value={selectedCity}
+                        onChange={handleCityChange}
+                        options={cityOptions}
+                        placeholder="City"
+                        styles={defaultStyles}
+                        components={{
+                          DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
+                            <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
+                          ),
+                        }}
+                      />
+
+                    </div>
+                    <div className='col-md-3'>
+                      <Select
+                        value={selectedPropertyType}
+                        onChange={handlePropertyChange}
+                        options={data.map((group) => ({
+                          label: group.label,
+                          options: group.options.map((option) => ({
+                            value: option.value,
+                            label: option.label,
+                          })),
+                        }))}
+
+                        isMulti={false} // Set to true for multi-select
+                        styles={defaultStyles}
+                        placeholder="Property Type"
+                        components={{
+                          DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
+                            <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
+                          ),
+                        }}
+                      />
+
+
+                    </div>
+
+
+                  </div>
+                )} */}
+
+              <div className='row' style={{ paddingRight: '2%', paddingLeft: '2%' }}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                   <p style={{ color: 'white', cursor: 'pointer', marginTop: '1%', marginRight: '1%' }} onClick={handleOptionClick}>
                     <FontAwesomeIcon icon={isCardVisible ? faChevronUp : faChevronDown} /> {isCardVisible ? 'Less Option' : 'More Option'}
@@ -322,6 +466,10 @@ const propertyType = [
                 </div>
               </div>
             </div>
+
+          </div>
+          <div className='row'>
+
 
           </div>
         </div>
