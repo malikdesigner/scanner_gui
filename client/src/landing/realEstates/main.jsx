@@ -11,21 +11,21 @@ import Articles from './Articles';
 import Filters from './filters';
 function Main() {
   const [activeHome, setActiveHome] = useState('homePopular');
+  const [activePlot, setActivePlot] = useState('plotPopular');
+  const [activeCommertial, setActiveCommertial] = useState('commertialPopular');
+  const [apiResponse, setApiResponse] = useState(null);
 
   const handleAnchorClick = (anchor) => {
     setActiveHome(anchor);
   };
-  const [activePlot, setActivePlot] = useState('plotPopular');
 
   const handlePlotClick = (anchor) => {
     setActivePlot(anchor);
   };
-  const [activeCommertial, setActiveCommertial] = useState('commertialPopular');
 
   const handleCommertialClick = (anchor) => {
     setActiveCommertial(anchor);
   };
-  const [apiResponse, setApiResponse] = useState(null);
 
   const handleApiResponse = (response) => {
     setApiResponse(response);
