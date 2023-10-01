@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './component.css'
 import jobspk from '../assets/jobz.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone, faPhoneAlt, faArrowRight,faEnvelope, faMapMarker, faSquarePlus, faSquareMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPhone, faPhoneAlt, faArrowRight, faEnvelope, faMapMarker, faSquarePlus, faSquareMinus } from '@fortawesome/free-solid-svg-icons';
 import { faTelegram } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 import Footer from './footer'
@@ -72,8 +72,8 @@ function Landing() {
                       <strong>    WELCOME <br />TO  OUR <br />PAGE </strong>
                     </h4>
                     <p className='ml-3 text-white' >Scan the code and infrastructure that support your website for security vulnerabilities. </p>
-                    <button className='btn btn-primary ' style={{marginRight:'5%',padding:'3%',paddingRight:'7%',paddingLeft:'7%'}}> Start Free </button>
-                    <button className="btn btn-demo btn-hover" style={{marginLeft:'5%',padding:'3%',paddingRight:'7%',paddingLeft:'7%'}}>Dailies <FontAwesomeIcon icon={faArrowRight} /></button>
+                    <button className='btn btn-primary ' style={{ marginRight: '5%', padding: '3%', paddingRight: '7%', paddingLeft: '7%' }}> Start Free </button>
+                    <button className="btn btn-demo btn-hover" style={{ marginLeft: '5%', padding: '3%', paddingRight: '7%', paddingLeft: '7%' }}>Dailies <FontAwesomeIcon icon={faArrowRight} /></button>
 
                   </div>
                   <div className='col-lg-2'>  </div>
@@ -154,52 +154,52 @@ function Landing() {
 
             </div>
             <div className='card'>
-              
-                <div className='card bg-light' >
-                  <h2 style={{ textAlign: 'center', marginTop: '4%' }}> <strong>FAQs </strong>  </h2>
-                  <div className='card-body' style={{ marginLeft: ' 15%', marginRight: '15%', padding: '8%' }}>
 
-                    <div
-                      className="hover-background"
-                      data-toggle="collapse"
-                      data-target="#collapseFirstContent"
-                      aria-expanded={!isFirstCollapsed}
-                      aria-controls="collapseFirstContent"
-                      onClick={toggleFirstCollapse}>
-                      <p style={{ fontSize: 'larger', color: '#01011e', cursor: 'pointer', padding: '2%' }}> <FontAwesomeIcon icon={isFirstCollapsed ? faSquarePlus : faSquareMinus} shake />    <span style={{ marginLeft: '2%' }}>Why is vulnerability scanning important?</span>  </p>
-                    </div>
-                    <div
-                      id="collapseFirstContent"
-                      className={`collapse ${isFirstCollapsed ? '' : 'show'}`}
-                    >
-                      <div className="card-body">
-                        <p>
-                          This is the content of the collapsible card. You can replace this
-                          with your actual content.
-                        </p>
-                      </div>
-                    </div>
-                    <div data-toggle="collapse"
-                      className="hover-background"
-                      data-target="#collapseContent"
-                      aria-expanded={!isSecCollapsed}
-                      aria-controls="collapseContent"
-                      onClick={toggleCollapse}>
-                      <p style={{ fontSize: 'larger', color: '#01011e', cursor: 'pointer', padding: '2%' }}> <FontAwesomeIcon icon={isSecCollapsed ? faSquarePlus : faSquareMinus} shake />   <span style={{ marginLeft: '2%' }}>How does website vulnerability scanning work?</span>  </p>
-                    </div>
-                    <div
-                      id="collapseContent"
-                      className={`collapse ${isSecCollapsed ? '' : 'show'}`}
-                    >
-                      <div className="card-body">
-                        <p>
-                          This is the content of the collapsible card. You can replace this
-                          with your actual content.
-                        </p>
-                      </div>
+              <div className='card bg-light' >
+                <h2 style={{ textAlign: 'center', marginTop: '4%' }}> <strong>FAQs </strong>  </h2>
+                <div className='card-body' style={{ marginLeft: ' 15%', marginRight: '15%', padding: '8%' }}>
+
+                  <div
+                    className="hover-background"
+                    data-toggle="collapse"
+                    data-target="#collapseFirstContent"
+                    aria-expanded={!isFirstCollapsed}
+                    aria-controls="collapseFirstContent"
+                    onClick={toggleFirstCollapse}>
+                    <p style={{ fontSize: 'larger', color: '#01011e', cursor: 'pointer', padding: '2%' }}> <FontAwesomeIcon icon={isFirstCollapsed ? faSquarePlus : faSquareMinus} shake />    <span style={{ marginLeft: '2%' }}>Why is vulnerability scanning important?</span>  </p>
+                  </div>
+                  <div
+                    id="collapseFirstContent"
+                    className={`collapse ${isFirstCollapsed ? '' : 'show'}`}
+                  >
+                    <div className="card-body">
+                      <p>
+                        This is the content of the collapsible card. You can replace this
+                        with your actual content.
+                      </p>
                     </div>
                   </div>
-                
+                  <div data-toggle="collapse"
+                    className="hover-background"
+                    data-target="#collapseContent"
+                    aria-expanded={!isSecCollapsed}
+                    aria-controls="collapseContent"
+                    onClick={toggleCollapse}>
+                    <p style={{ fontSize: 'larger', color: '#01011e', cursor: 'pointer', padding: '2%' }}> <FontAwesomeIcon icon={isSecCollapsed ? faSquarePlus : faSquareMinus} shake />   <span style={{ marginLeft: '2%' }}>How does website vulnerability scanning work?</span>  </p>
+                  </div>
+                  <div
+                    id="collapseContent"
+                    className={`collapse ${isSecCollapsed ? '' : 'show'}`}
+                  >
+                    <div className="card-body">
+                      <p>
+                        This is the content of the collapsible card. You can replace this
+                        with your actual content.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
             <div className='row' >
@@ -296,7 +296,7 @@ function Landing() {
 
 
 
-<Footer />
+              <Footer />
             </div>
           </div>
         </section>

@@ -25,7 +25,7 @@ const Header = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
+
     return (
         <div >
             {/* {Desktop view start here} */}
