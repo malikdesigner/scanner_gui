@@ -19,20 +19,21 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}`);
 // articles from zameen.com
-    // cron.schedule('* * * * * *', () => {
-    //     try {
-    //         // Use execSync to run the command synchronously
-    //         const stdout = execSync('node articleZameen.js > backend.txt');
-    //     } catch (error) {
-    //         console.error(`Error: ${error.message}`);
-    //     }
-    // });
-    // cron.schedule('* * * * * *', () => {
-    //     try {
-    //         // Use execSync to run the command synchronously
-    //         const stdout = execSync('node articleGranna.js > granna.txt');
-    //     } catch (error) {
-    //         console.error(`Error: ${error.message}`);
-    //     }
-    // });
+    cron.schedule('* * * * * *', () => {
+        try {
+            // Use execSync to run the command synchronously
+          //  const stdout = execSync('node scripts/articleZameen.js > backend.txt');
+          const stdout = execSync('node scripts/zamnee.js ');
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+        }
+    });
+    cron.schedule('* * * * * *', () => {
+        try {
+            // Use execSync to run the command synchronously
+            const stdout = execSync('node scripts/articleGranna.js > granna.txt');
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+        }
+    });
 });
