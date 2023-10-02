@@ -11,10 +11,28 @@ import Slider from '@mui/material/Slider';
 
 import backgroundImage from '../../assets/realEstateMain.jpg'
 
-function Filters() {
+function Filters({ onApiResponse }) {
 
   const [isCardVisible, setCardVisibility] = useState(false);
-
+  const [activeButton, setActiveButton] = useState('Buy'); // Initialize the active button
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [fetchedStates, setFetchedStates] = useState([]);
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedPropertyType, setselectedPropertyType] = useState(null);
+  const [cityOptions, setCityOptions] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  // setting price range dropdown
+  const minRange = 0;
+  const maxRange = 10000000;
+  const [priceRange, setPriceRange] = useState([0, 1000000000]);
+  // setting marla range dropdown
+  const minMarlaRange = 0;
+  const maxMarlaRange = 10000;
+  const [marlaRange, setMarlaRange] = useState([0, 1000000000]);
   const handleInputClick = () => {
     // When the input is clicked, set isCardVisible to true to display the card
     setCardVisibility(true);
@@ -32,158 +50,6 @@ function Filters() {
     height: '500px', // Set the height of the div
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     // opacity:'0.5'
-  };
-
-  const [activeButton, setActiveButton] = useState('Buy'); // Initialize the active button
-
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
-  };
-  const options = [
-    { label: "Management", value: 1 },
-    { label: "Technology", value: 2 },
-    { label: "Finanace", value: 3 }
-  ]
-  const [selectedOption, setSelectedOption] = useState(null);
-  const handleSelectChange = (selectedState) => {
-    console.log(selectedState)
-    setSelectedOption(selectedState);
-  };
-  //making province dropdown
-
-  const [fetchedStates, setFetchedStates] = useState([]);
-  const [selectedState, setSelectedState] = useState(null);
-  useEffect(() => {
-    const fetchAllStates = async () => {
-      try {
-        const res = await axios.get("http://localhost:8800/province")
-        console.log(res)
-        setFetchedStates(res.data)
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    fetchAllStates()
-  }, [])
-  const handleStateChange = (value) => {
-    setSelectedState(value);
-  };
-
-
-  //making cities dropdown
-  const [cityOptions, setCityOptions] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
-
-  //province and cities dropdown on province change
-  useEffect(() => {
-    if (selectedState !== null) {
-      console.log('Seelct' + selectedState)     // Only send the request if selectedOption is not null
-      const fetchCityData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8800/cities/${selectedState.value}`);
-          const cityOptions = response.data.map((city) => ({
-            value: city.id,
-            label: city.city_name,
-          }));
-          setCityOptions(cityOptions);
-        } catch (error) {
-          console.error('Error fetching city data:', error);
-        }
-      };
-      fetchCityData();
-    } else {
-      // console.log('seelctedstare' + selectedState)
-      setCityOptions([]);
-    }
-  }, [selectedState]);
-
-
-  const handleCityChange = (selectedCity) => {
-    setSelectedCity(selectedCity);
-  };
-  //dropdown for property type
-  const [selectedPropertyType, setselectedPropertyType] = useState(null);
-
-  const data = [
-    {
-      label: 'Group 1',
-      options: [
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' },
-      ],
-    },
-    {
-      label: 'Group 2',
-      options: [
-        { value: 'option4', label: 'Option 4' },
-        { value: 'option5', label: 'Option 5' },
-        { value: 'option6', label: 'Option 6' },
-      ],
-    },
-  ];
-  const handlePropertyChange = (selectedPropertyType) => {
-    setselectedPropertyType(selectedPropertyType);
-  };
-  //JSON DATA
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [subcategoryOptions, setSubcategoryOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  useEffect(() => {
-    // Fetch category options
-    axios.get('http://localhost:8800/getCategories').then((response) => {
-      setCategoryOptions(response.data);
-    });
-  }, []);
-
-  const handleCategoryChange = (selectedCategory) => {
-    setSelectedCategory(selectedCategory.value);
-
-    console.log(selectedCategory.value)
-    // Fetch subcategory options based on the selected category
-    axios.get(`http://localhost:8800/getSubcategories/${selectedCategory.value}`).then((response) => {
-      const subcategories = response.data;
-      console.log('Subcategories:', subcategories);
-
-      // Ensure subcategories is an array before setting it
-      if (Array.isArray(subcategories)) {
-        setSubcategoryOptions(subcategories.map((subcategory) => ({
-          label: subcategory,
-          value: subcategory,
-        })));
-      } else {
-        console.error('Invalid subcategories data:', subcategories);
-        setSubcategoryOptions([]); // Set empty array as a fallback
-      }
-    })
-      .catch((error) => {
-        console.error('Error fetching subcategories:', error);
-        setSubcategoryOptions([]); // Set empty array on error
-      });
-  };
-  const handleSubcategoryChange = (selectedOption) => {
-    setSelectedSubcategory(selectedOption.value);
-  };
-  // JSON DATA END
-
-  // setting price range dropdown
-  const minRange = 0;
-  const maxRange = 10000000;
-  const [priceRange, setPriceRange] = useState([0, 1000000000]);
-
-  const handlePriceRange = (event, newValue) => {
-    setPriceRange(newValue);
-  };
-
-  // setting marla range dropdown
-  const minMarlaRange = 0;
-  const maxMarlaRange = 10000;
-  const [marlaRange, setMarlaRange] = useState([0, 1000000000]);
-
-  const handleMarlaRange = (event, newValue) => {
-    setMarlaRange(newValue);
   };
   const defaultStyles = {
     control: (provided, state) => ({
@@ -233,6 +99,154 @@ function Filters() {
       backgroundColor: 'white', // Set background color to white
     }),
   }
+  const options = [
+    { label: "Management", value: 1 },
+    { label: "Technology", value: 2 },
+    { label: "Finanace", value: 3 }
+  ]
+
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
+
+  const handleSelectChange = (selectedState) => {
+    // console.log(selectedState)
+    setSelectedOption(selectedState);
+  };
+  //making province dropdown
+  useEffect(() => {
+    const fetchAllStates = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/province")
+        setFetchedStates(res.data)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    fetchAllStates()
+  }, [])
+  const handleStateChange = (value) => {
+    setSelectedState(value);
+  };
+
+
+
+
+  //province and cities dropdown on province change
+  useEffect(() => {
+    if (selectedState !== null) {
+      const fetchCityData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8800/cities/${selectedState.value}`);
+          const cityOptions = response.data.map((city) => ({
+            value: city.id,
+            label: city.city_name,
+          }));
+          setCityOptions(cityOptions);
+        } catch (error) {
+          console.error('Error fetching city data:', error);
+        }
+      };
+      fetchCityData();
+    } else {
+      // console.log('seelctedstare' + selectedState)
+      setCityOptions([]);
+    }
+  }, [selectedState]);
+
+
+  const handleCityChange = (selectedCity) => {
+    // console.log(selectedCity.value)
+    setSelectedCity(selectedCity.value);
+  };
+  //dropdown for property type
+
+  // const data = [
+  //   {
+  //     label: 'Group 1',
+  //     options: [
+  //       { value: 'option1', label: 'Option 1' },
+  //       { value: 'option2', label: 'Option 2' },
+  //       { value: 'option3', label: 'Option 3' },
+  //     ],
+  //   },
+  //   {
+  //     label: 'Group 2',
+  //     options: [
+  //       { value: 'option4', label: 'Option 4' },
+  //       { value: 'option5', label: 'Option 5' },
+  //       { value: 'option6', label: 'Option 6' },
+  //     ],
+  //   },
+  // ];
+  const handlePropertyChange = (selectedPropertyType) => {
+    setselectedPropertyType(selectedPropertyType);
+  };
+
+  useEffect(() => {
+    // Fetch category options
+    axios.get('http://localhost:8800/getCategories').then((response) => {
+      setCategoryOptions(response.data);
+    });
+  }, []);
+
+  const handleCategoryChange = (selectedCategory) => {
+    setSelectedCategory(selectedCategory ? selectedCategory.value : null);
+
+    // Fetch subcategory options based on the selected category
+    if (selectedCategory) {
+      axios.get(`http://localhost:8800/getSubcategories/${selectedCategory.value}`).then((response) => {
+        const subcategories = response.data;
+        console.log('Subcategories:', subcategories);
+        if (response.data) {
+          setSubcategoryOptions(response.data);
+        }
+        else {
+          console.error('Invalid subcategories data:', subcategories);
+          setSubcategoryOptions([]);
+        }
+      })
+        .catch((error) => {
+          console.error('Error fetching subcategories:', error);
+          setSubcategoryOptions([]);
+        });
+    } else {
+      setSubcategoryOptions([]);
+    }
+
+  };
+
+  const handleSubcategoryChange = (selectedSubcategory) => {
+    setSelectedSubcategory(selectedSubcategory ? selectedSubcategory.value : null);
+  };
+
+  const handlePriceRange = (event, newValue) => {
+    setPriceRange(newValue);
+  };
+  const handleMarlaRange = (event, newValue) => {
+    setMarlaRange(newValue);
+  };
+
+  const [transactions, setTransactions] = useState([]);
+
+  const handleFilterTransactions = () => {
+    fetchAllTransaction()
+  }
+  const fetchAllTransaction = async () => {
+    try {
+
+      const res = await axios.get(`http://localhost:8800/transactions/${selectedSubcategory.value || selectedSubcategory}/${selectedCity.value || selectedCity}`);
+      console.log(res);
+      setTransactions(res.data);
+      onApiResponse(res.data);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
 
   return (
     <div>
@@ -316,7 +330,7 @@ function Filters() {
                 </div>
                 <div className='col-md-2' style={{ marginRight: '1%' }}>
                   <Select
-                    value={selectedCity}
+                    value={cityOptions.find(option => option.value === selectedCity)}
                     onChange={handleCityChange}
                     options={cityOptions}
                     placeholder="City"
@@ -349,7 +363,7 @@ function Filters() {
                       paddingBottom: '8%',
 
                     }}
-
+                    onClick={handleFilterTransactions}
                   >
                     <strong> FIND </strong>
                   </button>
@@ -365,11 +379,21 @@ function Filters() {
                       onChange={handleCategoryChange}
                       placeholder="Property Type"
                       styles={changeStyles}
+                      isSearchable={true} // Add this line if you want to enable searching
                     />
                   </div>
+
                   <div className="col-md-3">
-                    <Select options={subcategoryOptions} placeholder="Property Category" onChange={handleSubcategoryChange} styles={changeStyles} />
+                    <Select
+                      options={subcategoryOptions}
+                      value={subcategoryOptions.find((option) => option.value === selectedSubcategory)}
+                      onChange={handleSubcategoryChange}
+                      placeholder="Property Category"
+                      styles={changeStyles}
+                      isSearchable={true} // Add this line if you want to enable searching
+                    />
                   </div>
+
 
                   <div className='col-md-3' style={{ background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <span style={{ color: 'grey' }}>Price Range</span>
