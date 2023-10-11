@@ -160,26 +160,7 @@ function Filters({ onApiResponse }) {
     // console.log(selectedCity.value)
     setSelectedCity(selectedCity.value);
   };
-  //dropdown for property type
 
-  // const data = [
-  //   {
-  //     label: 'Group 1',
-  //     options: [
-  //       { value: 'option1', label: 'Option 1' },
-  //       { value: 'option2', label: 'Option 2' },
-  //       { value: 'option3', label: 'Option 3' },
-  //     ],
-  //   },
-  //   {
-  //     label: 'Group 2',
-  //     options: [
-  //       { value: 'option4', label: 'Option 4' },
-  //       { value: 'option5', label: 'Option 5' },
-  //       { value: 'option6', label: 'Option 6' },
-  //     ],
-  //   },
-  // ];
   const handlePropertyChange = (selectedPropertyType) => {
     setselectedPropertyType(selectedPropertyType);
   };
@@ -222,7 +203,9 @@ function Filters({ onApiResponse }) {
   };
 
   const handlePriceRange = (event, newValue) => {
+
     setPriceRange(newValue);
+    console.log(priceRange)
   };
   const handleMarlaRange = (event, newValue) => {
     setMarlaRange(newValue);
@@ -235,8 +218,11 @@ function Filters({ onApiResponse }) {
   }
   const fetchAllTransaction = async () => {
     try {
-
-      const res = await axios.get(`http://localhost:8800/transactions/${selectedSubcategory.value || selectedSubcategory}/${selectedCity.value || selectedCity}`);
+      if (activeButton == 'Buy') {
+        var buyRent = 0
+      } else { var buyRent = 1 }
+      const res = await axios.get(`http://localhost:8800/transactionsTest/${buyRent}/${selectedSubcategory.value || selectedSubcategory}/${selectedCity.value || selectedCity}/${priceRange[0]}/${priceRange[1]}`);
+      console.log(`http://localhost:8800/transactionsTest/${buyRent}/${selectedSubcategory.value || selectedSubcategory}/${selectedCity.value || selectedCity}/${priceRange[0]}/${priceRange[1]}`)
       console.log(res);
       setTransactions(res.data);
       onApiResponse(res.data);
@@ -423,52 +409,7 @@ function Filters({ onApiResponse }) {
                 </div>
               )}
 
-              {/* {selectedCategory == "Plots" &&
-                (
-                  <div className={`row transition-element ${isCardVisible ? 'visible' : 'hidden'}`} style={{ paddingRight: '2%', paddingLeft: '2%', marginTop: '1%' }}>
-                    <div className='col-md-3'>
-                      <Select
-                        value={selectedCity}
-                        onChange={handleCityChange}
-                        options={cityOptions}
-                        placeholder="City"
-                        styles={defaultStyles}
-                        components={{
-                          DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                            <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                          ),
-                        }}
-                      />
 
-                    </div>
-                    <div className='col-md-3'>
-                      <Select
-                        value={selectedPropertyType}
-                        onChange={handlePropertyChange}
-                        options={data.map((group) => ({
-                          label: group.label,
-                          options: group.options.map((option) => ({
-                            value: option.value,
-                            label: option.label,
-                          })),
-                        }))}
-
-                        isMulti={false} // Set to true for multi-select
-                        styles={defaultStyles}
-                        placeholder="Property Type"
-                        components={{
-                          DropdownIndicator: ({ selectProps: { menuIsOpen } }) => (
-                            <FontAwesomeIcon icon={menuIsOpen ? faChevronUp : faChevronDown} />
-                          ),
-                        }}
-                      />
-
-
-                    </div>
-
-
-                  </div>
-                )} */}
 
               <div className='row' style={{ paddingRight: '2%', paddingLeft: '2%' }}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

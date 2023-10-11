@@ -54,13 +54,13 @@ function Articles({ apiResponse }) {
                     <div className='card-body'>
                         {currentItems.length > 0 ? (
                             currentItems.map((item) => (
-                                <div className="row">
+                                <div className="row" style={{marginTop:'2%'}}>
                                     <div className="col-md-6">
                                         <a href={item.mainLink} style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
 
                                             <picture>
                                                 <source type="image/webp" srcSet={JSON.parse(item.images)[0]} />
-                                                <img src={JSON.parse(item.images)[0]} role="presentation" alt="Property" style={{ width: '100%', height: 'auto' }} />
+                                                <img src={JSON.parse(item.images)[0]} role="presentation" alt="Property" style={{ width: '100%', height: '300px' }} />
                                             </picture>
                                         </a>
                                     </div>
@@ -68,29 +68,29 @@ function Articles({ apiResponse }) {
                                         <a href={item.mainLink} style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
                                             <h4 className='mb-2'> <strong >{item.price}  </strong></h4>
                                             <h5 className='mb-2'> <strong> {item.title} </strong>  </h5>
-                                            <div className='row mt-2'>
+                                            <div className=' mt-2'>
                                                 {item.bedroom !== "-" && item.bedroom !== null ? (
-                                                    <span> <FontAwesomeIcon icon={faBed} />{item.bedroom}</span>
+                                                    <span style={{marginRight:'5%'}}> <FontAwesomeIcon style={{marginRight:'2%'}} icon={faBed} />{item.bedroom}</span>
                                                 ) : null}
                                                 {item.bath !== "-" && item.bath !== null ? (
-                                                    <span><FontAwesomeIcon icon={faSink} />{item.bath} </span>
+                                                    <span style={{marginRight:'5%'}}><FontAwesomeIcon style={{marginRight:'2%'}} icon={faSink} />{item.bath} </span>
                                                 ) : null}
                                                 {item.area !== "-" && item.area !== null ? (
-                                                    <span> <FontAwesomeIcon icon={faMap} /> {item.area}</span>
+                                                    <span style={{marginRight:'5%'}}> <FontAwesomeIcon style={{marginRight:'2%'}} icon={faMap} /> {item.area}</span>
                                                 ) : null}
                                             </div>
 
-                                            <span className='mt-2' style={{ marginTop: '5%' }}>{item.description}
+                                            <span className='mt-2' style={{ marginTop: '5%' }}>{item.description.slice(0, 250)}... <a href={item.mainLink}>more</a>  
                                                 {/* .slice(0, 100)... <a href=''>more</a> */}
                                             </span>
-                                            <div style={{ marginTop: '8%' }}>
+                                            <div style={{ marginTop: '2%' }}>
                                                 <span className='mt-4'>
                                                     Added:
                                                     <TimeAgo date={item.added} />
                                                 </span>
                                             </div>
                                         </a>
-                                        <div className='row' style={{ marginTop: '10%' }}>
+                                        <div className='row' style={{ marginTop: '2%' }}>
                                             <div className='col-md-5'>
 
                                                 <a className=' btn btn-light' style={{ marginRight: '5%', border: '1px solid #28a745' }} href={item.whatsapp}> <FontAwesomeIcon icon={faSink} /> Whatsapp </a>
@@ -111,7 +111,7 @@ function Articles({ apiResponse }) {
                         )}
 
                         {totalPages > 1 && (
-                            <Pagination>
+                            <Pagination style={{justifyContent:'center',marginTop:'5%'}}>
                                 {[...Array(totalPages)].map((_, index) => (
                                     <Pagination.Item
                                         key={index + 1}
