@@ -4,7 +4,7 @@ import '../App.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './component.css'
-import image from '../assets/logo.png';
+import image from '../assets/mainLogo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 const Header = () => {
@@ -33,7 +33,7 @@ const Header = () => {
             <nav className={`navbar navbar-expand-lg navbar-dark bg-white-opal-9 row ${screenWidth >= 1245 ? 'show' : 'hide'}`} style={{ alignItems: 'center' }}>
                 <div className="col-md-2">
                     <Link to='/' >
-                        <img src={image} alt="" style={{ width: '15%', }} />
+                        <img src={image} alt="" style={{ width: '20%', }} />
                     </Link>
                 </div>
                 <div className="col-md-7">
@@ -45,7 +45,7 @@ const Header = () => {
                         <li className="nav-item mx-5">
                             <Link style={{ textDecoration: 'none' }} to="/realEstate"><h5><strong>Real Estates</strong> </h5> </Link>
                         </li>
-                        <li className="nav-item mx-5">
+                        {/* <li className="nav-item mx-5">
                             <Link style={{ textDecoration: 'none' }} to="/user"> <h5> <strong> Jobs </strong> </h5> </Link>
                         </li>
                         <li className="nav-item dropdown mx-5">
@@ -57,7 +57,7 @@ const Header = () => {
                                 <Link className="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Another action</Link>
                                 <Link className="dropdown-item" to="#" style={{ textDecoration: 'none' }}>Something else here</Link>
                             </div>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className='col-md-2'>

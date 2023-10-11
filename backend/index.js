@@ -164,69 +164,102 @@ const categoryOptions = Object.keys(jsonData).map((category) => ({
 // Assuming you have a MySQL connection named 'mysqlConnection'
 app.get('/getCategories', (req, res) => {
     const query = 'SELECT id, name FROM tbl_propertytype';
-    
+
     mysqlConnection.query(query, (err, rows) => {
-      if (err) {
-        console.error('Error fetching categories:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-      } else {
-        const categoryOptions = rows.map((category) => ({
-          label: category.name,
-          value: category.id,
-        }));
-        res.json(categoryOptions);
-      }
+        if (err) {
+            console.error('Error fetching categories:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            const categoryOptions = rows.map((category) => ({
+                label: category.name,
+                value: category.id,
+            }));
+            res.json(categoryOptions);
+        }
     });
-  });
-  
-  app.get('/getSubcategories/:category', (req, res) => {
-    const selectedCategoryId = req.params.category;
-    const query = 'SELECT id,name FROM tbl_propertycategory WHERE category = ?';
-    
-    mysqlConnection.query(query, [selectedCategoryId], (err, rows) => {
-        // console.log(rows)
-      if (err) {
-        console.error('Error fetching subcategories:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-      } else {
-        const subcategoryOptions = rows.map((subcategory) => ({
-          label: subcategory.name,
-          value: subcategory.id,
-        }));
-        res.json(subcategoryOptions);
-      }
-    });
-  });
-  
-app.get('/transactions/:type/:city', (req, res) => {
-     console.log(req.params)
-     if(req.params.city!=undefined && req.params.type !=undefined && req.params.type!="" && req.params.city!="" ){
-
-         const q = 'SELECT a.*, b.name AS propertyTypeCategory, c.city_name, d.name as propertyType FROM tbltransactions AS a JOIN tbl_propertycategory AS b ON a.type = b.id JOIN tbl_cities AS c ON a.city = c.id JOIN tbl_propertytype AS d ON b.category = d.id where a.type=? && a.city=?;';
-         mysqlConnection.query(q,[req.params.type, req.params.city], (err, rows) => {
-             if (err) {
-                 console.log(err)
-                 return res.json(err)
-             }
-             else{
-                 return res.json(rows)
-             }
-         });
-     }
-    //  else {
-    //     const q = 'SELECT a.*, b.name AS propertyTypeCategory, c.city_name, d.name as propertyType FROM tbltransactions AS a JOIN tbl_propertycategory AS b ON a.type = b.id JOIN tbl_cities AS c ON a.city = c.id JOIN tbl_propertytype AS d ON b.category = d.id where a.type=10 && a.city=10;';
-    //     mysqlConnection.query(q,[req.params.type, req.params.city], (err, rows) => {
-    //         if (err) {
-    //             console.log(err)
-    //             return res.json(err)
-    //         }
-    //         else{
-    //             console.log(res.json(rows))
-    //             return res.json(rows)
-    //         }
-    //     });
-    //  }
-
 });
 
+app.get('/getSubcategories/:category', (req, res) => {
+    const selectedCategoryId = req.params.category;
+    const query = 'SELECT id,name FROM tbl_propertycategory WHERE category = ?';
+
+    mysqlConnection.query(query, [selectedCategoryId], (err, rows) => {
+        // console.log(rows)
+        if (err) {
+            console.error('Error fetching subcategories:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            const subcategoryOptions = rows.map((subcategory) => ({
+                label: subcategory.name,
+                value: subcategory.id,
+            }));
+            res.json(subcategoryOptions);
+        }
+    });
+});
+
+app.get('/transactions/:type/:city', (req, res) => {
+    console.log(req.params)
+    if (req.params.city != undefined && req.params.type != undefined && req.params.type != "" && req.params.city != "") {
+
+        const q = 'SELECT a.*, b.name AS propertyTypeCategory, c.city_name, d.name as propertyType FROM tbltransactions AS a JOIN tbl_propertycategory AS b ON a.type = b.id JOIN tbl_cities AS c ON a.city = c.id JOIN tbl_propertytype AS d ON b.category = d.id where a.type=? && a.city=?;';
+        mysqlConnection.query(q, [req.params.type, req.params.city], (err, rows) => {
+            if (err) {
+                console.log(err)
+                return res.json(err)
+            }
+            else {
+                return res.json(rows)
+            }
+        });
+    }
+
+});
+app.get('/transactionsTest/:buyRent/:type/:city/:priceMinRange/:priceMaxRange', (req, res) => {
+    let filters = [];
+    let params = [];
+    console.log(req.params);
+    // Check for filters and build the query dynamically
+    if (req.params.buyRent && req.params.buyRent !== "") {
+        filters.push('a.buyRent = ?');
+        params.push(req.params.buyRent);
+    }
+
+    if (req.params.type && req.params.type !== "") {
+        filters.push('a.type = ?');
+        params.push(req.params.type);
+    }
+    if (req.params.city && req.params.city !== "") {
+        filters.push('a.city = ?');
+        params.push(req.params.city);
+    }
+    // if (req.params.priceMinRange && req.params.priceMinRange !== "" && req.params.priceMaxRange && req.params.priceMaxRange !== "") {
+    //     filters.push('a.price BETWEEN ? AND ?');
+    //     params.push(req.params.priceMinRange);
+    //     params.push(req.params.priceMaxRange);
+    // }
+
+
+    // Add more filters as needed
+
+    let whereClause = filters.length > 0 ? 'WHERE ' + filters.join(' && ') : '';
+
+    const q = `
+        SELECT a.*, b.name AS propertyTypeCategory, c.city_name, d.name as propertyType
+        FROM tbltransactions AS a
+        JOIN tbl_propertycategory AS b ON a.type = b.id
+        JOIN tbl_cities AS c ON a.city = c.id
+        JOIN tbl_propertytype AS d ON b.category = d.id
+        ${whereClause};
+    `;
+    console.log(q);
+    mysqlConnection.query(q, params, (err, rows) => {
+        if (err) {
+            console.log(err);
+            return res.json(err);
+        } else {
+            return res.json(rows);
+        }
+    });
+});
 app.listen(8800, () => console.log("Server is runnig at port 8800"))
